@@ -1,1161 +1,715 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HotelLux — Sistema de Gestión</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<!doctype html>
+<html lang=es>
 
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <title>HotelLux</title>
+  <style>
     :root {
-      --gold: #c9a84c;
-      --gold-light: #e8d08a;
-      --dark: #0d0d0d;
-      --dark2: #1a1a1a;
-      --dark3: #262626;
-      --dark4: #333;
-      --cream: #f5f0e8;
-      --cream2: #ede8dc;
-      --white: #ffffff;
-      --red: #c0392b;
-      --green: #27ae60;
-      --text-muted: #888;
+      --g: #c9a84c;
+      --d: #0d0d0d;
+      --d2: #1a1a1a;
+      --d3: #262626;
+      --t: #888;
+      --w: #f5f0e8;
+      --r: #c0392b;
+      --gr: #27ae60
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0
     }
 
     body {
-      background: var(--dark);
-      color: var(--cream);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
+      font: 14px system-ui;
+      background: var(--d);
+      color: var(--w);
+      min-height: 100vh
     }
 
-    /* ── HEADER ── */
+    a,
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit
+    }
+
+    button {
+      cursor: pointer
+    }
+
     header {
-      background: var(--dark2);
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      background: var(--d2);
       border-bottom: 1px solid #2a2a2a;
-      padding: 0 2rem;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 70px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      padding: 0 16px
     }
+
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
       font-weight: 900;
-      color: var(--gold);
       letter-spacing: 2px;
+      color: var(--g)
     }
-    .logo span { color: var(--cream); font-weight: 400; }
-    #user-info {
+
+    .logo b {
+      color: var(--w);
+      font-weight: 400
+    }
+
+    #ui {
       display: flex;
+      gap: 10px;
       align-items: center;
-      gap: 1rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--t);
+      font-size: 12px
     }
-    #user-info strong { color: var(--gold); }
-    #btn-logout {
-      background: transparent;
-      border: 1px solid var(--dark4);
-      color: var(--text-muted);
-      padding: 0.4rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      transition: all 0.2s;
+
+    #ui strong {
+      color: var(--g)
     }
-    #btn-logout:hover { border-color: var(--gold); color: var(--gold); }
 
-    /* ── LAYOUT ── */
-    .app { display: flex; min-height: calc(100vh - 70px); }
+    .app {
+      display: flex;
+      min-height: calc(100vh - 60px)
+    }
 
-    /* ── SIDEBAR ── */
-    nav#sidebar {
-      width: 230px;
-      background: var(--dark2);
+    nav {
+      width: 220px;
+      background: var(--d2);
       border-right: 1px solid #222;
-      padding: 2rem 0;
-      flex-shrink: 0;
+      padding: 12px 0
     }
-    nav#sidebar .nav-section {
-      font-size: 0.65rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      padding: 0.5rem 1.5rem;
-      margin-top: 1rem;
-    }
-    nav#sidebar button {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: #aaa;
-      padding: 0.75rem 1.5rem;
-      text-align: left;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
-    nav#sidebar button:hover { background: var(--dark3); color: var(--cream); }
-    nav#sidebar button.active { background: var(--dark3); color: var(--gold); border-left: 3px solid var(--gold); }
-    nav#sidebar button .icon { font-size: 1rem; width: 20px; }
 
-    /* ── MAIN CONTENT ── */
+    nav .s {
+      padding: 8px 16px;
+      color: var(--t);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase
+    }
+
+    nav button {
+      width: 100%;
+      background: 0;
+      border: 0;
+      color: #aaa;
+      text-align: left;
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    nav button:hover,
+    nav button.a {
+      background: var(--d3);
+      color: var(--w)
+    }
+
+    nav button.a {
+      border-left: 3px solid var(--g);
+      color: var(--g)
+    }
+
     main {
       flex: 1;
-      padding: 2.5rem;
-      overflow-y: auto;
+      padding: 18px;
+      overflow: auto
     }
 
-    .page { display: none; animation: fadeIn 0.3s ease; }
-    .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .p {
+      display: none
+    }
+
+    .p.a {
+      display: block
+    }
 
     h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: var(--gold);
-      margin-bottom: 0.3rem;
+      color: var(--g);
+      margin: 0 0 6px
     }
-    .subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
 
-    /* ── CARDS ── */
-    .cards-grid {
+    small {
+      color: var(--t)
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.2rem;
-      margin-top: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 12px
     }
+
     .card {
-      background: var(--dark2);
+      background: var(--d2);
       border: 1px solid #2a2a2a;
       border-radius: 8px;
-      padding: 1.5rem;
-      transition: border-color 0.2s, transform 0.2s;
+      padding: 12px
     }
-    .card:hover { border-color: var(--gold); transform: translateY(-2px); }
-    .card-badge {
+
+    .badge {
       display: inline-block;
-      font-size: 0.7rem;
-      padding: 0.2rem 0.6rem;
+      font-size: 10px;
+      padding: 2px 8px;
       border-radius: 20px;
-      font-weight: 500;
-      margin-bottom: 0.8rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .badge-available { background: rgba(39,174,96,0.15); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
-    .badge-occupied  { background: rgba(192,57,43,0.15);  color: var(--red);   border: 1px solid rgba(192,57,43,0.3); }
-    .badge-suite     { background: rgba(201,168,76,0.15); color: var(--gold);  border: 1px solid rgba(201,168,76,0.3); }
-    .badge-doble     { background: rgba(100,149,237,0.15); color: #6495ed; border: 1px solid rgba(100,149,237,0.3); }
-    .badge-individual{ background: rgba(180,180,180,0.1); color: #aaa; border: 1px solid #333; }
-    .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--cream); margin-bottom: 0.4rem; }
-    .card p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
-    .card .price { font-size: 1.3rem; color: var(--gold); font-weight: 700; margin: 0.8rem 0; }
-    .card .price span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
-
-    /* ── BOTONES ── */
-    .btn {
-      display: inline-block;
-      padding: 0.55rem 1.3rem;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    .btn-gold { background: var(--gold); color: var(--dark); }
-    .btn-gold:hover { background: var(--gold-light); }
-    .btn-outline { background: transparent; border: 1px solid var(--dark4); color: var(--cream); }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-danger { background: transparent; border: 1px solid rgba(192,57,43,0.4); color: var(--red); }
-    .btn-danger:hover { background: rgba(192,57,43,0.1); }
-    .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.78rem; }
-    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
-
-    /* ── FORMULARIO ── */
-    .form-box {
-      background: var(--dark2);
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 2rem;
-      max-width: 480px;
-    }
-    .form-box h2 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 1.5rem; }
-    .form-group { margin-bottom: 1.1rem; }
-    .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; letter-spacing: 0.5px; }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      background: var(--dark3);
       border: 1px solid #333;
-      border-radius: 5px;
-      color: var(--cream);
-      padding: 0.65rem 0.9rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      transition: border-color 0.2s;
-    }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-    .form-group select option { background: var(--dark3); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-    /* ── TABLA ── */
-    .table-wrap { overflow-x: auto; margin-top: 1.5rem; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    thead th {
-      background: var(--dark3);
-      color: var(--text-muted);
+      color: #aaa;
       text-transform: uppercase;
-      font-size: 0.7rem;
-      letter-spacing: 1.5px;
-      padding: 0.8rem 1rem;
-      text-align: left;
+      letter-spacing: 1px
     }
-    tbody tr { border-bottom: 1px solid #222; transition: background 0.15s; }
-    tbody tr:hover { background: var(--dark3); }
-    tbody td { padding: 0.8rem 1rem; color: var(--cream2); }
-    .status-ok  { color: var(--green); }
-    .status-err { color: var(--red); }
 
-    /* ── STATS ── */
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-    .stat-card {
-      background: var(--dark2);
+    .ok {
+      color: var(--gr);
+      border-color: rgba(39, 174, 96, .3);
+      background: rgba(39, 174, 96, .12)
+    }
+
+    .er {
+      color: var(--r);
+      border-color: rgba(192, 57, 43, .3);
+      background: rgba(192, 57, 43, .12)
+    }
+
+    .btn {
+      border: 1px solid #333;
+      background: 0;
+      color: var(--w);
+      padding: 6px 10px;
+      border-radius: 6px
+    }
+
+    .btn.g {
+      background: var(--g);
+      color: #111;
+      border: 0;
+      font-weight: 700
+    }
+
+    .btn.d {
+      border-color: rgba(192, 57, 43, .4);
+      color: var(--r)
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .box {
+      background: var(--d2);
       border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 1.2rem 1.5rem;
+      border-radius: 10px;
+      padding: 16px;
+      max-width: 520px
     }
-    .stat-card .label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
-    .stat-card .value { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); margin-top: 0.2rem; }
 
-    /* ── LOGIN PAGE ── */
-    #login-screen {
-      position: fixed; inset: 0;
-      background: var(--dark);
+    .f {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    label {
+      display: block;
+      color: var(--t);
+      font-size: 12px;
+      margin: 10px 0 6px
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: var(--d3);
+      border: 1px solid #333;
+      color: var(--w);
+      border-radius: 6px;
+      padding: 10px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #222
+    }
+
+    th {
+      color: var(--t);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: left;
+      background: var(--d3)
+    }
+
+    #login {
+      position: fixed;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 999;
+      background: var(--d);
+      z-index: 99
     }
-    #login-screen.hidden { display: none; }
-    .login-box {
-      background: var(--dark2);
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 3rem 2.5rem;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .login-box .logo-big {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      color: var(--gold);
-      margin-bottom: 0.3rem;
-    }
-    .login-box .tagline { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
-    .login-tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1px solid #333; border-radius: 6px; overflow: hidden; }
-    .login-tab { flex: 1; padding: 0.6rem; background: transparent; border: none; color: #888; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; transition: all 0.2s; }
-    .login-tab.active { background: var(--dark3); color: var(--gold); }
-    .login-form-group { margin-bottom: 1rem; text-align: left; }
-    .login-form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; }
-    .login-form-group input {
-      width: 100%; background: var(--dark3); border: 1px solid #333;
-      border-radius: 5px; color: var(--cream); padding: 0.65rem 0.9rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-    }
-    .login-form-group input:focus { outline: none; border-color: var(--gold); }
-    .btn-login { width: 100%; padding: 0.75rem; background: var(--gold); color: var(--dark); border: none; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 0.5rem; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
-    .btn-login:hover { background: var(--gold-light); }
-    .login-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 1.2rem; }
-    .login-hint code { background: var(--dark3); padding: 0.1rem 0.4rem; border-radius: 3px; color: var(--gold); }
 
-    /* ── TOAST ── */
+    #login.h {
+      display: none
+    }
+
     #toast {
-      position: fixed; bottom: 2rem; right: 2rem;
-      background: var(--dark3);
-      border-left: 3px solid var(--gold);
-      color: var(--cream);
-      padding: 0.9rem 1.5rem;
-      border-radius: 6px;
-      font-size: 0.88rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s;
-      z-index: 9999;
-      max-width: 300px;
-    }
-    #toast.show { opacity: 1; transform: translateY(0); }
-    #toast.error { border-color: var(--red); }
-
-    /* ── MODAL ── */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 500; display: none;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      background: var(--dark2); border: 1px solid #333; border-radius: 10px;
-      padding: 2rem; width: 90%; max-width: 450px;
-      animation: fadeIn 0.2s ease;
-    }
-    .modal h3 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 1.2rem; }
-    .modal-footer { display: flex; justify-content: flex-end; gap: 0.7rem; margin-top: 1.5rem; }
-
-    /* ── HISTORIAL ── */
-    .historial-item {
-      background: var(--dark2);
-      border: 1px solid #2a2a2a;
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      background: var(--d3);
+      border-left: 3px solid var(--g);
+      padding: 10px 12px;
       border-radius: 8px;
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: .2s;
+      max-width: 320px
+    }
+
+    #toast.s {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    #toast.e {
+      border-color: var(--r)
+    }
+
+    #m {
+      position: fixed;
+      inset: 0;
+      display: none;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .historial-item .info h4 { color: var(--cream); font-size: 0.95rem; }
-    .historial-item .info p  { color: var(--text-muted); font-size: 0.8rem; }
-    .historial-item .precio  { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
-
-    /* ── ADMIN TAG ── */
-    .admin-badge {
-      background: rgba(201,168,76,0.15);
-      color: var(--gold);
-      border: 1px solid rgba(201,168,76,0.3);
-      font-size: 0.65rem;
-      padding: 0.15rem 0.5rem;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      justify-content: center;
+      background: rgba(0, 0, 0, .7);
+      z-index: 50
     }
 
-    /* ── SECTION HEADER ── */
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    #m.o {
+      display: flex
+    }
 
-    /* ── EMPTY STATE ── */
-    .empty { text-align: center; padding: 3rem; color: var(--text-muted); }
-    .empty .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    #m .box {
+      width: min(520px, 92vw)
+    }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--dark); }
-    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    @media (max-width:700px) {
+      nav {
+        display: none
+      }
 
-    @media (max-width: 600px) {
-      nav#sidebar { display: none; }
-      main { padding: 1.2rem; }
+      main {
+        padding: 12px
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="logo-big">🏨 HotelLux</div>
-    <div class="tagline">Sistema de Gestión Hotelera</div>
+  <div id=login>
+    <div class=box>
+      <div style="font-size:22px;font-weight:900;color:var(--g);margin-bottom:4px">HotelLux</div><small>Sistema de
+        Gestión</small>
+      <div class=row style="margin:14px 0 10px">
+        <button class="btn" data-tab=login id=tl>Iniciar</button><button class="btn" data-tab=reg
+          id=tr>Registro</button>
+      </div>
 
-    <div class="login-tabs">
-      <button class="login-tab active" id="tab-login" onclick="switchTab('login')">Iniciar sesión</button>
-      <button class="login-tab" id="tab-register" onclick="switchTab('register')">Registrarse</button>
-    </div>
+      <div id=pl>
+        <label>Email</label><input id=le type=email placeholder=correo@ejemplo.com>
+        <label>Contraseña</label><input id=lp type=password placeholder=••••••••>
+        <button class="btn g" style="width:100%;margin-top:12px" data-act=login>Entrar</button>
+        <small style="display:block;margin-top:10px">Admin: admin@hotel.com / admin123 · User: user@hotel.com /
+          user123</small>
+      </div>
 
-    <!-- LOGIN -->
-    <div id="login-panel">
-      <div class="login-form-group">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="correo@ejemplo.com" />
+      <div id=pr style="display:none">
+        <label>Nombre</label><input id=rn placeholder="Ana García">
+        <label>Email</label><input id=re type=email placeholder=correo@ejemplo.com>
+        <label>Contraseña</label><input id=rp type=password placeholder=••••••••>
+        <button class="btn g" style="width:100%;margin-top:12px" data-act=reg>Crear cuenta</button>
       </div>
-      <div class="login-form-group">
-        <label>Contraseña</label>
-        <input type="password" id="login-pass" placeholder="••••••••" />
-      </div>
-      <button class="btn-login" onclick="iniciarSesion()">Entrar</button>
-      <div class="login-hint">
-        Admin: <code>admin@hotel.com</code> / <code>admin123</code><br>
-        Usuario: <code>user@hotel.com</code> / <code>user123</code>
-      </div>
-    </div>
-
-    <!-- REGISTER -->
-    <div id="register-panel" style="display:none">
-      <div class="login-form-group">
-        <label>Nombre completo</label>
-        <input type="text" id="reg-nombre" placeholder="Ana García" />
-      </div>
-      <div class="login-form-group">
-        <label>Email</label>
-        <input type="email" id="reg-email" placeholder="correo@ejemplo.com" />
-      </div>
-      <div class="login-form-group">
-        <label>Contraseña</label>
-        <input type="password" id="reg-pass" placeholder="••••••••" />
-      </div>
-      <button class="btn-login" onclick="registrarUsuario()">Crear cuenta</button>
     </div>
   </div>
-</div>
 
-<!-- ═══════════════ APP ═══════════════ -->
-<header>
-  <div class="logo">Hotel<span>Lux</span></div>
-  <div id="user-info">
-    <span>Bienvenido, <strong id="nombre-usuario">—</strong></span>
-    <span id="rol-badge"></span>
-    <button id="btn-logout" onclick="cerrarSesion()">Salir</button>
-  </div>
-</header>
+  <header>
+    <div class=logo>Hotel<b>Lux</b></div>
+    <div id=ui><span>Bienvenido, <strong id=un>—</strong></span><span id=rb></span><button class=btn id=lo
+        data-act=logout>Salir</button></div>
+  </header>
 
-<div class="app">
-  <nav id="sidebar">
-    <div class="nav-section">Principal</div>
-    <button class="active" onclick="mostrarPagina('dashboard')"><span class="icon">📊</span> Dashboard</button>
-    <button onclick="mostrarPagina('habitaciones')"><span class="icon">🛏</span> Habitaciones</button>
-    <button onclick="mostrarPagina('reservas')"><span class="icon">📅</span> Mis Reservas</button>
-    <button onclick="mostrarPagina('historial')"><span class="icon">🕐</span> Historial</button>
+  <div class=app>
+    <nav id=nav>
+      <div class=s>Principal</div>
+      <button class=a data-page=dashboard>📊 Dashboard</button>
+      <button data-page=hab>🛏 Habitaciones</button>
+      <button data-page=mis>📅 Mis Reservas</button>
+      <button data-page=hist>🕐 Historial</button>
+      <div class=s id=as>Admin</div>
+      <button id=nu data-page=usr>👥 Usuarios</button>
+      <button id=nh data-page=ah>⚙️ Habitaciones</button>
+      <button id=ns data-page=sv>🍽 Servicios</button>
+    </nav>
 
-    <div class="nav-section">Admin</div>
-    <button id="nav-usuarios" onclick="mostrarPagina('usuarios')"><span class="icon">👥</span> Usuarios</button>
-    <button id="nav-admin-hab" onclick="mostrarPagina('admin-habitaciones')"><span class="icon">⚙️</span> Gestionar Hab.</button>
-    <button id="nav-admin-serv" onclick="mostrarPagina('admin-servicios')"><span class="icon">🍽</span> Servicios</button>
-  </nav>
-
-  <main>
-    <!-- DASHBOARD -->
-    <div class="page active" id="page-dashboard">
-      <h1>Dashboard</h1>
-      <p class="subtitle">Resumen del hotel en tiempo real</p>
-      <div class="stats-row" id="stats-row"></div>
-      <h2 style="font-family:'Playfair Display',serif;color:var(--cream);margin-bottom:1rem;font-size:1.2rem;">Últimas reservas</h2>
-      <div id="ultimas-reservas"></div>
-    </div>
-
-    <!-- HABITACIONES -->
-    <div class="page" id="page-habitaciones">
-      <h1>Habitaciones</h1>
-      <p class="subtitle">Consulta disponibilidad y realiza tu reserva</p>
-      <div class="section-header">
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-          <button class="btn btn-outline btn-sm" onclick="filtrarHab('todas')">Todas</button>
-          <button class="btn btn-outline btn-sm" onclick="filtrarHab('individual')">Individual</button>
-          <button class="btn btn-outline btn-sm" onclick="filtrarHab('doble')">Doble</button>
-          <button class="btn btn-outline btn-sm" onclick="filtrarHab('suite')">Suite</button>
-          <button class="btn btn-outline btn-sm" onclick="filtrarHab('disponible')">Disponibles</button>
+    <main>
+      <section class="p a" id=p-dashboard>
+        <h1>Dashboard</h1><small>Resumen en tiempo real</small>
+        <div class=grid id=stats></div>
+        <div style="margin-top:14px">
+          <h2 style="font-size:16px;margin-bottom:8px">Últimas reservas</h2>
+          <div id=last></div>
         </div>
-      </div>
-      <div class="cards-grid" id="lista-habitaciones"></div>
-    </div>
+      </section>
 
-    <!-- RESERVAS -->
-    <div class="page" id="page-reservas">
-      <h1>Mis Reservas</h1>
-      <p class="subtitle">Gestiona tus reservas activas</p>
-      <div id="lista-reservas-usuario"></div>
-    </div>
+      <section class=p id=p-hab>
+        <h1>Habitaciones</h1><small>Filtra y reserva</small>
+        <div class=row style="margin-top:10px">
+          <button class=btn data-filter=todas>Todas</button><button class=btn
+            data-filter=individual>Individual</button><button class=btn data-filter=doble>Doble</button><button
+            class=btn data-filter=suite>Suite</button><button class=btn data-filter=disponible>Disponibles</button>
+        </div>
+        <div class=grid id=rooms></div>
+      </section>
 
-    <!-- HISTORIAL -->
-    <div class="page" id="page-historial">
-      <h1>Historial</h1>
-      <p class="subtitle">Todas tus reservas pasadas</p>
-      <div id="historial-usuario"></div>
-    </div>
+      <section class=p id=p-mis>
+        <h1>Mis Reservas</h1><small>Activas</small>
+        <div id=my></div>
+      </section>
+      <section class=p id=p-hist>
+        <h1>Historial</h1><small>Pasadas / canceladas</small>
+        <div id=his></div>
+      </section>
 
-    <!-- USUARIOS (admin) -->
-    <div class="page" id="page-usuarios">
-      <h1>Gestión de Usuarios</h1>
-      <p class="subtitle">Listado de clientes registrados</p>
-      <div class="table-wrap">
+      <section class=p id=p-usr>
+        <h1>Usuarios</h1><small>Admin</small>
         <table>
           <thead>
             <tr>
-              <th>Nombre</th><th>Email</th><th>Rol</th><th>Reservas</th><th>Acciones</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Reservas</th>
             </tr>
           </thead>
-          <tbody id="tabla-usuarios"></tbody>
+          <tbody id=ut></tbody>
         </table>
-      </div>
-    </div>
+      </section>
 
-    <!-- ADMIN HABITACIONES -->
-    <div class="page" id="page-admin-habitaciones">
-      <h1>Gestionar Habitaciones</h1>
-      <p class="subtitle">Añade o edita habitaciones del hotel</p>
-      <div class="form-box" style="margin-bottom:2rem;">
-        <h2>Nueva Habitación</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Número</label>
-            <input type="number" id="hab-num" placeholder="101" />
+      <section class=p id=p-ah>
+        <h1>Gestionar Habitaciones</h1><small>Admin</small>
+        <div class=box style="margin-top:12px">
+          <h3 style="color:var(--g);margin-bottom:10px">Nueva</h3>
+          <div class=f>
+            <div><label>Nº</label><input id=hn type=number placeholder=101></div>
+            <div><label>Tipo</label><select id=ht>
+                <option value=individual>Individual</option>
+                <option value=doble>Doble</option>
+                <option value=suite>Suite</option>
+              </select></div>
           </div>
-          <div class="form-group">
-            <label>Tipo</label>
-            <select id="hab-tipo">
-              <option value="individual">Individual</option>
-              <option value="doble">Doble</option>
-              <option value="suite">Suite</option>
-            </select>
+          <div class=f>
+            <div><label>Precio/noche</label><input id=hp type=number placeholder=80></div>
+            <div><label>Capacidad</label><input id=hc type=number placeholder=2></div>
           </div>
+          <label>Descripción</label><textarea id=hd rows=2 placeholder="Vista al mar..."></textarea>
+          <button class="btn g" style="margin-top:10px" data-act=addRoom>+ Añadir</button>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Precio/noche (€)</label>
-            <input type="number" id="hab-precio" placeholder="80" />
-          </div>
-          <div class="form-group">
-            <label>Capacidad (personas)</label>
-            <input type="number" id="hab-capacidad" placeholder="2" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Descripción</label>
-          <textarea id="hab-desc" rows="2" placeholder="Vista al mar, cama king size..."></textarea>
-        </div>
-        <button class="btn btn-gold" onclick="agregarHabitacion()">➕ Añadir habitación</button>
-      </div>
-
-      <h2 style="font-family:'Playfair Display',serif;color:var(--cream);font-size:1.2rem;margin-bottom:1rem;">Habitaciones existentes</h2>
-      <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Nº</th><th>Tipo</th><th>Precio</th><th>Capacidad</th><th>Estado</th><th>Acciones</th></tr>
+            <tr>
+              <th>Nº</th>
+              <th>Tipo</th>
+              <th>Precio</th>
+              <th>Cap.</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
           </thead>
-          <tbody id="tabla-admin-hab"></tbody>
+          <tbody id=rt></tbody>
         </table>
-      </div>
-    </div>
+      </section>
 
-    <!-- ADMIN SERVICIOS -->
-    <div class="page" id="page-admin-servicios">
-      <h1>Servicios del Hotel</h1>
-      <p class="subtitle">Gestiona los servicios adicionales disponibles</p>
-      <div class="form-box" style="margin-bottom:2rem;">
-        <h2>Nuevo Servicio</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nombre del servicio</label>
-            <input type="text" id="serv-nombre" placeholder="Desayuno buffet" />
+      <section class=p id=p-sv>
+        <h1>Servicios</h1><small>Admin</small>
+        <div class=box style="margin-top:12px">
+          <div class=f>
+            <div><label>Nombre</label><input id=sn placeholder="Desayuno buffet"></div>
+            <div><label>Precio</label><input id=sp type=number placeholder=15></div>
           </div>
-          <div class="form-group">
-            <label>Precio (€)</label>
-            <input type="number" id="serv-precio" placeholder="15" />
-          </div>
+          <button class="btn g" style="margin-top:10px" data-act=addServ>+ Añadir</button>
         </div>
-        <button class="btn btn-gold" onclick="agregarServicio()">➕ Añadir servicio</button>
-      </div>
-      <div class="cards-grid" id="lista-servicios-admin"></div>
-    </div>
-  </main>
-</div>
+        <div class=grid id=serv></div>
+      </section>
+    </main>
+  </div>
 
-<!-- MODAL RESERVA -->
-<div class="modal-backdrop" id="modal-reserva">
-  <div class="modal">
-    <h3>📅 Realizar Reserva</h3>
-    <div class="form-group">
-      <label>Habitación seleccionada</label>
-      <input type="text" id="res-hab-info" readonly style="opacity:0.6;" />
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Fecha de entrada</label>
-        <input type="date" id="res-entrada" />
+  <div id=m>
+    <div class=box>
+      <h3 style="color:var(--g);margin-bottom:10px">Reserva</h3>
+      <label>Habitación</label><input id=mi readonly style="opacity:.7">
+      <div class=f>
+        <div><label>Entrada</label><input id=me type=date></div>
+        <div><label>Salida</label><input id=ms type=date></div>
       </div>
-      <div class="form-group">
-        <label>Fecha de salida</label>
-        <input type="date" id="res-salida" />
+      <label>Extras</label>
+      <div id=mx class=row style="margin-top:6px"></div>
+      <div id=mt style="margin-top:10px;font-weight:800;color:var(--g)"></div>
+      <div class=row style="justify-content:flex-end;margin-top:14px">
+        <button class=btn data-act=closeM>Cancelar</button><button class="btn g" data-act=okM>Confirmar</button>
       </div>
-    </div>
-    <div class="form-group">
-      <label>Servicios adicionales</label>
-      <div id="servicios-check" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.4rem;"></div>
-    </div>
-    <div id="res-total" style="color:var(--gold);font-weight:700;font-size:1.1rem;margin-top:0.5rem;"></div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn btn-gold" onclick="confirmarReserva()">Confirmar reserva</button>
     </div>
   </div>
-</div>
 
-<!-- TOAST -->
-<div id="toast"></div>
+  <div id=toast></div>
 
-<script>
-// ════════════════════════════════════════════════
-//   CLASES — POO (Herencia, Asociación, Composición)
-// ════════════════════════════════════════════════
+  <script>
+    const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+    const uid = () => Date.now() + Math.random(), fmt = d => new Date(d).toLocaleDateString('es-ES'), inDate = d => d.toISOString().slice(0, 10);
+    const toast = (m, e = 0) => { const t = $("#toast"); t.textContent = m; t.className = ""; t.classList.add("s"); if (e) t.classList.add("e"); setTimeout(() => t.classList.remove("s"), 2200) };
+    const hotel = { usuarios: [], servicios: [], habitaciones: [], reservas: [] };
+    const mkUser = (nombre, email, password, rol = "usuario") => ({ id: uid(), nombre, email, password, rol, reservas: [] });
+    const mkServ = (nombre, precio) => ({ id: uid(), nombre, precio: +precio });
+    const mkRoom = (numero, tipo, precio, capacidad, descripcion = "") => ({ id: uid(), numero: +numero, tipo, precio: +precio, capacidad: +capacidad, descripcion, disponible: 1 });
+    const noches = (a, b) => Math.max(1, Math.ceil((new Date(b) - new Date(a)) / 864e5));
+    const totalRes = (room, extras, a, b) => { const n = noches(a, b), ex = extras.reduce((s, x) => s + x.precio, 0); return (room.precio + ex) * n };
+    const mkRes = (u, r, a, b, extras) => ({ id: "RES-" + (Math.random() * 9e4 + 1e4 | 0), u, r, entrada: a, salida: b, extras, estado: "activa", creada: Date.now(), total: totalRes(r, extras, a, b) });
 
-// ── PERSONA (clase base) ──────────────────────
-class Persona {
-  constructor(nombre, email, password) {
-    this.nombre   = nombre;
-    this.email    = email;
-    this.password = password;
-    this.id       = Date.now() + Math.random();
-  }
-  toString() { return `${this.nombre} <${this.email}>`; }
-}
+    hotel.usuarios.push(
+      mkUser("Admin Hotel", "admin@hotel.com", "admin123", "admin"),
+      mkUser("Ana García", "user@hotel.com", "user123", "usuario"),
+      mkUser("Carlos López", "carlos@hotel.com", "carlos123", "usuario")
+    );
+    hotel.servicios.push(mkServ("Desayuno buffet", 18), mkServ("Parking", 12), mkServ("Spa & Wellness", 35), mkServ("Room Service", 25), mkServ("Traslado aeropuerto", 45));
+    hotel.habitaciones.push(
+      mkRoom(101, "individual", 75, 1, "Acogedora habitación con vistas al patio interior"),
+      mkRoom(102, "individual", 80, 1, "Planta baja, acceso adaptado, baño completo"),
+      mkRoom(201, "doble", 120, 2, "Cama king-size, vistas a la Gran Vía"),
+      mkRoom(202, "doble", 130, 2, "Dos camas individuales, perfecta para amigos"),
+      mkRoom(203, "doble", 125, 2, "Balcón privado, baño con bañera hidromasaje"),
+      mkRoom(301, "suite", 250, 3, "Suite presidencial, jacuzzi y terraza"),
+      mkRoom(302, "suite", 220, 4, "Suite junior con vistas 360° a la ciudad"),
+      mkRoom(401, "individual", 90, 1, "Ático con luz natural")
+    );
+    // demo reserva (2025-06-01..2025-06-05)
+    const uDemo = hotel.usuarios.find(x => x.email == "user@hotel.com"), rDemo = hotel.habitaciones.find(x => x.numero == 201);
+    const demo = mkRes(uDemo, rDemo, "2025-06-01", "2025-06-05", [hotel.servicios[0]]);
+    rDemo.disponible = 0; uDemo.reservas.push(demo); hotel.reservas.push(demo);
 
-// ── USUARIO (hereda de Persona) ───────────────
-class Usuario extends Persona {
-  constructor(nombre, email, password) {
-    super(nombre, email, password);
-    this.rol      = 'usuario';
-    this.reservas = [];          // Asociación con Reserva
-  }
-  agregarReserva(reserva) { this.reservas.push(reserva); }
-  getReservasActivas() { return this.reservas.filter(r => r.estado === 'activa'); }
-  getHistorial()       { return this.reservas; }
-}
+    let user = null, filter = "todas", selRoom = null;
 
-// ── ADMINISTRADOR (hereda de Persona) ─────────
-class Administrador extends Persona {
-  constructor(nombre, email, password) {
-    super(nombre, email, password);
-    this.rol = 'admin';
-  }
-  agregarHabitacion(hotel, habitacion) { hotel.agregarHabitacion(habitacion); }
-  eliminarHabitacion(hotel, id) { hotel.eliminarHabitacion(id); }
-  agregarServicio(hotel, servicio) { hotel.agregarServicio(servicio); }
-}
-
-// ── SERVICIO ──────────────────────────────────
-class Servicio {
-  constructor(nombre, precio) {
-    this.id     = Date.now() + Math.random();
-    this.nombre = nombre;
-    this.precio = precio;
-  }
-}
-
-// ── HABITACIÓN ────────────────────────────────
-// Composición: Habitacion CONTIENE servicios propios
-class Habitacion {
-  constructor(numero, tipo, precio, capacidad, descripcion = '') {
-    this.id          = Date.now() + Math.random();
-    this.numero      = numero;
-    this.tipo        = tipo;         // individual | doble | suite
-    this.precio      = precio;       // por noche
-    this.capacidad   = capacidad;
-    this.descripcion = descripcion;
-    this.disponible  = true;
-    this.servicios   = [];           // Composición: los servicios forman parte de la habitación
-  }
-  reservar()   { this.disponible = false; }
-  liberar()    { this.disponible = true;  }
-  getEstado()  { return this.disponible ? 'disponible' : 'ocupada'; }
-}
-
-// ── RESERVA ───────────────────────────────────
-// Asociación: une Usuario ↔ Habitacion
-class Reserva {
-  constructor(usuario, habitacion, entrada, salida, serviciosExtra = []) {
-    this.id             = 'RES-' + Math.floor(Math.random() * 90000 + 10000);
-    this.usuario        = usuario;       // Asociación con Usuario
-    this.habitacion     = habitacion;    // Asociación con Habitacion
-    this.entrada        = new Date(entrada);
-    this.salida         = new Date(salida);
-    this.serviciosExtra = serviciosExtra;
-    this.estado         = 'activa';
-    this.fechaCreacion  = new Date();
-    this.calcularTotal();
-  }
-  calcularTotal() {
-    const noches       = this.getNochesTotal();
-    const costoHab     = noches * this.habitacion.precio;
-    const costoServ    = this.serviciosExtra.reduce((a, s) => a + s.precio, 0) * noches;
-    this.total         = costoHab + costoServ;
-  }
-  getNochesTotal() {
-    const diff = this.salida - this.entrada;
-    return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
-  }
-  cancelar() {
-    this.estado = 'cancelada';
-    this.habitacion.liberar();
-  }
-  completar() { this.estado = 'completada'; }
-}
-
-// ── HOTEL ─────────────────────────────────────
-// Composición: Hotel CONTIENE habitaciones y servicios
-class Hotel {
-  constructor(nombre, direccion) {
-    this.nombre      = nombre;
-    this.direccion   = direccion;
-    this.habitaciones = [];   // Composición
-    this.servicios    = [];   // Composición
-    this.reservas     = [];
-    this.usuarios     = [];
-  }
-  agregarHabitacion(h)  { this.habitaciones.push(h); }
-  eliminarHabitacion(id){ this.habitaciones = this.habitaciones.filter(h => h.id !== id); }
-  agregarServicio(s)    { this.servicios.push(s); }
-  eliminarServicio(id)  { this.servicios = this.servicios.filter(s => s.id !== id); }
-  agregarUsuario(u)     { this.usuarios.push(u); }
-  agregarReserva(r)     { this.reservas.push(r); }
-  buscarUsuario(email)  { return this.usuarios.find(u => u.email === email); }
-  getHabitacionesDisponibles() { return this.habitaciones.filter(h => h.disponible); }
-  getStats() {
-    return {
-      total:       this.habitaciones.length,
-      disponibles: this.habitaciones.filter(h => h.disponible).length,
-      ocupadas:    this.habitaciones.filter(h => !h.disponible).length,
-      usuarios:    this.usuarios.length,
-      reservas:    this.reservas.filter(r => r.estado === 'activa').length,
+    const setAdminUI = on => {
+      $("#rb").innerHTML = on ? '<span class="badge ok" style="border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.12);color:var(--g)">ADMIN</span>' : "";
+      ["nu", "nh", "ns", "as"].forEach(id => $("#" + id).style.display = on ? "" : "none");
     };
-  }
-}
 
-// ════════════════════════════════════════════════
-//   DATOS INICIALES
-// ════════════════════════════════════════════════
-const hotel = new Hotel('HotelLux', 'Gran Vía 42, Madrid');
+    const go = p => {
+      $$(".p").forEach(x => x.classList.remove("a")); $("#p-" + p).classList.add("a");
+      $$("nav button").forEach(b => b.classList.toggle("a", b.dataset.page == p));
+      render();
+    };
 
-const admin = new Administrador('Admin Hotel', 'admin@hotel.com', 'admin123');
-const user1 = new Usuario('Ana García',  'user@hotel.com',  'user123');
-const user2 = new Usuario('Carlos López','carlos@hotel.com','carlos123');
-hotel.agregarUsuario(admin);
-hotel.agregarUsuario(user1);
-hotel.agregarUsuario(user2);
+    const stats = () => {
+      const t = hotel.habitaciones.length, d = hotel.habitaciones.filter(x => x.disponible).length, o = t - d, u = hotel.usuarios.length, ra = hotel.reservas.filter(x => x.estado == "activa").length;
+      $("#stats").innerHTML = [
+        ["Total", t], ["Disponibles", d], ["Ocupadas", o], ["Reservas", ra], ["Usuarios", u]
+      ].map(([k, v]) => `<div class=card><div class=badge>${k}</div><div style="font-size:28px;color:var(--g);font-weight:900;margin-top:6px">${v}</div></div>`).join("");
+      const last = hotel.reservas.slice().sort((a, b) => b.creada - a.creada).slice(0, 5);
+      $("#last").innerHTML = last.length ? last.map(x => `<div class=card style="margin-top:10px">
+<div class=row style="justify-content:space-between">
+<div><b>Hab. ${x.r.numero}</b> <span class="badge">${x.r.tipo}</span><div style="color:var(--t);margin-top:4px">${x.u.nombre} · ${fmt(x.entrada)} → ${fmt(x.salida)} · ${noches(x.entrada, x.salida)} noche(s)</div></div>
+<div style="text-align:right"><span class="badge ${x.estado == "activa" ? "ok" : "er"}">${x.estado}</span><div style="color:var(--g);font-weight:900;font-size:18px;margin-top:6px">€${x.total}</div></div>
+</div></div>`).join("") : `<div class=card style="margin-top:10px;color:var(--t)">No hay reservas</div>`;
+    };
 
-// Servicios
-[
-  new Servicio('Desayuno buffet', 18),
-  new Servicio('Parking',         12),
-  new Servicio('Spa & Wellness',  35),
-  new Servicio('Room Service',    25),
-  new Servicio('Traslado aeropuerto', 45),
-].forEach(s => hotel.agregarServicio(s));
+    const renderRooms = () => {
+      let list = hotel.habitaciones;
+      if (filter == "disponible") list = list.filter(x => x.disponible);
+      else if (["individual", "doble", "suite"].includes(filter)) list = list.filter(x => x.tipo == filter);
+      $("#rooms").innerHTML = list.length ? list.map(h => `<div class=card>
+<span class="badge">${h.tipo}</span>
+<h3 style="margin:6px 0">Habitación ${h.numero}</h3>
+<div style="color:var(--t)">${h.descripcion || "Sin descripción"}</div>
+<div style="margin-top:8px;color:var(--t)">👤 ${h.capacidad}</div>
+<div style="font-size:18px;color:var(--g);font-weight:900;margin:8px 0">€${h.precio} <span style="font-size:12px;color:var(--t);font-weight:400">/ noche</span></div>
+<span class="badge ${h.disponible ? "ok" : "er"}">${h.disponible ? "disponible" : "ocupada"}</span>
+<div class=row style="margin-top:10px">
+${h.disponible && user?.rol != "admin" ? `<button class="btn g" data-act=book data-id="${h.id}">Reservar</button>` : h.disponible ? `<small>Solo usuarios reservan</small>` : ""}
+</div></div>`).join("") : `<div class=card style="color:var(--t)">No hay habitaciones</div>`;
+    };
 
-// Habitaciones
-const habitacionesIniciales = [
-  new Habitacion(101, 'individual', 75,  1, 'Acogedora habitación con vistas al patio interior'),
-  new Habitacion(102, 'individual', 80,  1, 'Planta baja, acceso adaptado, baño completo'),
-  new Habitacion(201, 'doble',      120, 2, 'Cama king-size, vistas a la Gran Vía'),
-  new Habitacion(202, 'doble',      130, 2, 'Dos camas individuales, perfecta para amigos'),
-  new Habitacion(203, 'doble',      125, 2, 'Balcón privado, baño con bañera hidromasaje'),
-  new Habitacion(301, 'suite',      250, 3, 'Suite presidencial, salón independiente, jacuzzi y terraza panorámica'),
-  new Habitacion(302, 'suite',      220, 4, 'Suite junior con vistas 360° a la ciudad'),
-  new Habitacion(401, 'individual', 90,  1, 'Ático con techos abuhardillados y luz natural'),
-];
-habitacionesIniciales.forEach(h => hotel.agregarHabitacion(h));
+    const renderMy = () => {
+      const a = (user?.reservas || []).filter(x => x.estado == "activa");
+      $("#my").innerHTML = a.length ? a.map(r => `<div class=card style="margin-top:10px">
+<div class=row style="justify-content:space-between;align-items:flex-start">
+<div><b>${r.id}</b> · Hab. ${r.r.numero} <span class=badge>${r.r.tipo}</span>
+<div style="color:var(--t);margin-top:4px">📅 ${fmt(r.entrada)} → ${fmt(r.salida)} · ${noches(r.entrada, r.salida)} noche(s)</div>
+${r.extras.length ? `<div style="color:var(--t);margin-top:4px">🍽 ${r.extras.map(x => x.nombre).join(", ")}</div>` : ""}
+</div>
+<div style="text-align:right"><div style="color:var(--g);font-weight:900;font-size:18px">€${r.total}</div>
+<button class="btn d" data-act=cancel data-id="${r.id}">Cancelar</button></div>
+</div></div>`).join("") : `<div class=card style="margin-top:10px;color:var(--t)">No tienes reservas activas</div>`;
+    };
 
-// Reserva de demo
-const resDemo = new Reserva(user1, habitacionesIniciales[2], '2025-06-01', '2025-06-05', [hotel.servicios[0]]);
-habitacionesIniciales[2].reservar();
-user1.agregarReserva(resDemo);
-hotel.agregarReserva(resDemo);
+    const renderHist = () => {
+      const all = (user?.reservas || []).slice().sort((a, b) => b.creada - a.creada);
+      $("#his").innerHTML = all.length ? all.map(r => `<div class=card style="margin-top:10px">
+<div class=row style="justify-content:space-between">
+<div><b>${r.id}</b> · Hab. ${r.r.numero} <span class=badge>${r.r.tipo}</span>
+<div style="color:var(--t);margin-top:4px">${fmt(r.entrada)} → ${fmt(r.salida)}</div>
+</div>
+<div style="text-align:right"><span class="badge ${r.estado == "activa" ? "ok" : r.estado == "cancelada" ? "er" : "badge"}">${r.estado}</span>
+<div style="color:var(--g);font-weight:900;font-size:18px;margin-top:6px">€${r.total}</div></div>
+</div></div>`).join("") : `<div class=card style="margin-top:10px;color:var(--t)">Sin historial</div>`;
+    };
 
-// ════════════════════════════════════════════════
-//   ESTADO DE LA APP
-// ════════════════════════════════════════════════
-let usuarioActual = null;
-let habitacionSeleccionada = null;
-let filtroHab = 'todas';
+    const renderUsers = () => {
+      $("#ut").innerHTML = hotel.usuarios.map(u => `<tr><td>${u.nombre}</td><td>${u.email}</td><td>${u.rol}</td><td>${u.reservas.length}</td></tr>`).join("");
+    };
 
-// ════════════════════════════════════════════════
-//   AUTH
-// ════════════════════════════════════════════════
-function switchTab(tab) {
-  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-  document.getElementById('login-panel').style.display    = tab === 'login'    ? '' : 'none';
-  document.getElementById('register-panel').style.display = tab === 'register' ? '' : 'none';
-}
+    const renderAdminRooms = () => {
+      $("#rt").innerHTML = hotel.habitaciones.map(h => `<tr>
+<td>${h.numero}</td><td>${h.tipo}</td><td>€${h.precio}</td><td>${h.capacidad}</td>
+<td><span class="badge ${h.disponible ? "ok" : "er"}">${h.disponible ? "disponible" : "ocupada"}</span></td>
+<td><button class="btn d" data-act=delRoom data-id="${h.id}">Eliminar</button></td>
+</tr>`).join("");
+    };
 
-function iniciarSesion() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const user  = hotel.buscarUsuario(email);
-  if (!user || user.password !== pass) { showToast('Credenciales incorrectas', true); return; }
-  usuarioActual = user;
-  entrarApp();
-}
+    const renderServ = () => {
+      $("#serv").innerHTML = hotel.servicios.map(s => `<div class=card>
+<b>${s.nombre}</b><div style="color:var(--t);margin:6px 0">€${s.precio} / noche</div>
+<button class="btn d" data-act=delServ data-id="${s.id}">Eliminar</button>
+</div>`).join("");
+    };
 
-function registrarUsuario() {
-  const nombre = document.getElementById('reg-nombre').value.trim();
-  const email  = document.getElementById('reg-email').value.trim();
-  const pass   = document.getElementById('reg-pass').value;
-  if (!nombre || !email || !pass) { showToast('Rellena todos los campos', true); return; }
-  if (hotel.buscarUsuario(email))  { showToast('El email ya existe', true); return; }
-  const nuevo = new Usuario(nombre, email, pass);
-  hotel.agregarUsuario(nuevo);
-  usuarioActual = nuevo;
-  entrarApp();
-  showToast('¡Cuenta creada con éxito!');
-}
+    const render = () => {
+      const p = $(".p.a")?.id?.slice(2);
+      if (p == "dashboard") stats();
+      if (p == "hab") renderRooms();
+      if (p == "mis") renderMy();
+      if (p == "hist") renderHist();
+      if (p == "usr") renderUsers();
+      if (p == "ah") renderAdminRooms();
+      if (p == "sv") renderServ();
+    };
 
-function entrarApp() {
-  document.getElementById('login-screen').classList.add('hidden');
-  document.getElementById('nombre-usuario').textContent = usuarioActual.nombre;
-  const esAdmin = usuarioActual.rol === 'admin';
-  document.getElementById('rol-badge').innerHTML = esAdmin ? '<span class="admin-badge">Admin</span>' : '';
-  // mostrar/ocultar nav admin
-  ['nav-usuarios','nav-admin-hab','nav-admin-serv'].forEach(id => {
-    document.getElementById(id).style.display = esAdmin ? '' : 'none';
-  });
-  renderDashboard();
-  renderHabitaciones();
-}
+    const openM = roomId => {
+      selRoom = hotel.habitaciones.find(x => x.id == roomId); if (!selRoom) return;
+      $("#mi").value = `Hab. ${selRoom.numero} — ${selRoom.tipo} — €${selRoom.precio}/noche`;
+      const h = new Date, m = new Date(h); m.setDate(h.getDate() + 1);
+      $("#me").value = inDate(h); $("#ms").value = inDate(m);
+      $("#mx").innerHTML = hotel.servicios.map(s => `<label class=badge style="cursor:pointer;background:var(--d3);border:1px solid #333;color:var(--w)">
+<input type=checkbox data-sid="${s.id}" style="margin-right:6px;accent-color:var(--g)">${s.nombre} (+€${s.precio})
+</label>`).join("");
+      calcM(); $("#m").classList.add("o");
+    };
+    const closeM = () => { $("#m").classList.remove("o"); selRoom = null };
+    const getExtras = () => $$('#mx input:checked').map(x => hotel.servicios.find(s => s.id == x.dataset.sid)).filter(Boolean);
+    const calcM = () => {
+      if (!selRoom) return;
+      const a = $("#me").value, b = $("#ms").value; if (!a || !b) return;
+      const t = totalRes(selRoom, getExtras(), a, b);
+      $("#mt").textContent = `Total estimado: €${t} (${noches(a, b)} noche(s))`;
+    };
 
-function cerrarSesion() {
-  usuarioActual = null;
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-pass').value  = '';
-  switchTab('login');
-}
+    document.addEventListener("change", e => {
+      if (e.target.id == "me" || e.target.id == "ms" || e.target.closest("#mx")) calcM();
+    });
 
-// ════════════════════════════════════════════════
-//   NAVEGACIÓN
-// ════════════════════════════════════════════════
-function mostrarPagina(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  document.querySelectorAll('#sidebar button').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+    document.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
 
-  const renders = {
-    'dashboard':         renderDashboard,
-    'habitaciones':      renderHabitaciones,
-    'reservas':          renderReservasUsuario,
-    'historial':         renderHistorial,
-    'usuarios':          renderUsuarios,
-    'admin-habitaciones':renderAdminHab,
-    'admin-servicios':   renderAdminServicios,
-  };
-  if (renders[id]) renders[id]();
-}
+      if (b.dataset.page) { go(b.dataset.page); return }
 
-// ════════════════════════════════════════════════
-//   DASHBOARD
-// ════════════════════════════════════════════════
-function renderDashboard() {
-  const s = hotel.getStats();
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card"><div class="label">Total habitaciones</div><div class="value">${s.total}</div></div>
-    <div class="stat-card"><div class="label">Disponibles</div><div class="value">${s.disponibles}</div></div>
-    <div class="stat-card"><div class="label">Ocupadas</div><div class="value">${s.ocupadas}</div></div>
-    <div class="stat-card"><div class="label">Reservas activas</div><div class="value">${s.reservas}</div></div>
-    <div class="stat-card"><div class="label">Usuarios</div><div class="value">${s.usuarios}</div></div>
-  `;
+      if (b.dataset.filter) { filter = b.dataset.filter; renderRooms(); return }
 
-  const cont = document.getElementById('ultimas-reservas');
-  const lista = [...hotel.reservas].reverse().slice(0, 5);
-  if (!lista.length) { cont.innerHTML = '<div class="empty"><div>No hay reservas aún</div></div>'; return; }
-  cont.innerHTML = lista.map(r => `
-    <div class="historial-item">
-      <div class="info">
-        <h4>Hab. ${r.habitacion.numero} — ${r.habitacion.tipo.toUpperCase()}</h4>
-        <p>${r.usuario.nombre} · ${formatFecha(r.entrada)} → ${formatFecha(r.salida)} · ${r.getNochesTotal()} noches</p>
-      </div>
-      <div>
-        <span class="card-badge ${r.estado === 'activa' ? 'badge-available' : 'badge-occupied'}">${r.estado}</span>
-        <div class="precio">€${r.total}</div>
-      </div>
-    </div>
-  `).join('');
-}
+      switch (b.dataset.act) {
+        case "login": {
+          const email = $("#le").value.trim(), pass = $("#lp").value;
+          const u = hotel.usuarios.find(x => x.email == email);
+          if (!u || u.password != pass) return toast("Credenciales incorrectas", 1);
+          user = u; $("#login").classList.add("h"); $("#un").textContent = user.nombre; setAdminUI(user.rol == "admin"); go("dashboard"); toast("Sesión iniciada"); break
+        }
+        case "reg": {
+          const nombre = $("#rn").value.trim(), email = $("#re").value.trim(), pass = $("#rp").value;
+          if (!nombre || !email || !pass) return toast("Rellena todos los campos", 1);
+          if (hotel.usuarios.some(x => x.email == email)) return toast("El email ya existe", 1);
+          user = mkUser(nombre, email, pass); hotel.usuarios.push(user);
+          $("#login").classList.add("h"); $("#un").textContent = user.nombre; setAdminUI(0); go("dashboard"); toast("Cuenta creada"); break
+        }
+        case "logout": {
+          user = null; $("#login").classList.remove("h"); $("#le").value = $("#lp").value = ""; $("#un").textContent = "—"; toast("Sesión cerrada"); break
+        }
+        case "book": if (user?.rol != "admin") openM(b.dataset.id); break;
+        case "closeM": closeM(); break;
+        case "okM": {
+          const a = $("#me").value, b2 = $("#ms").value;
+          if (!a || !b2) return toast("Selecciona fechas", 1);
+          if (new Date(b2) <= new Date(a)) return toast("Salida debe ser posterior", 1);
+          const r = mkRes(user, selRoom, a, b2, getExtras());
+          selRoom.disponible = 0; user.reservas.push(r); hotel.reservas.push(r);
+          closeM(); renderRooms(); toast("Reserva " + r.id + " — €" + r.total); break
+        }
+        case "cancel": {
+          const r = user.reservas.find(x => x.id == b.dataset.id); if (!r) break;
+          r.estado = "cancelada"; r.r.disponible = 1; renderMy(); toast("Reserva cancelada"); break
+        }
+        case "addRoom": {
+          if (user?.rol != "admin") break;
+          const n = $("#hn").value, p = $("#hp").value, c = $("#hc").value, t = $("#ht").value, d = $("#hd").value;
+          if (!n || !p || !c) return toast("Completa Nº/Precio/Cap.", 1);
+          hotel.habitaciones.push(mkRoom(n, t, p, c, d)); $("#hn").value = $("#hp").value = $("#hc").value = ""; $("#hd").value = ""; renderAdminRooms(); toast("Habitación añadida"); break
+        }
+        case "delRoom": {
+          if (user?.rol != "admin") break;
+          hotel.habitaciones = hotel.habitaciones.filter(x => x.id != b.dataset.id); renderAdminRooms(); toast("Habitación eliminada"); break
+        }
+        case "addServ": {
+          if (user?.rol != "admin") break;
+          const n = $("#sn").value.trim(), p = $("#sp").value; if (!n || !p) return toast("Completa nombre y precio", 1);
+          hotel.servicios.push(mkServ(n, p)); $("#sn").value = $("#sp").value = ""; renderServ(); toast("Servicio añadido"); break
+        }
+        case "delServ": {
+          if (user?.rol != "admin") break;
+          hotel.servicios = hotel.servicios.filter(x => x.id != b.dataset.id); renderServ(); toast("Servicio eliminado"); break
+        }
+        case "tab": {
+          const t = b.dataset.tab;
+          $("#pl").style.display = t == "login" ? "" : "none";
+          $("#pr").style.display = t == "reg" ? "" : "none";
+          $("#tl").className = "btn" + (t == "login" ? " g" : ""); $("#tr").className = "btn" + (t == "reg" ? " g" : "");
+          break
+        }
+      }
+    });
 
-// ════════════════════════════════════════════════
-//   HABITACIONES
-// ════════════════════════════════════════════════
-function filtrarHab(f) { filtroHab = f; renderHabitaciones(); }
-
-function renderHabitaciones() {
-  let lista = hotel.habitaciones;
-  if (filtroHab === 'disponible') lista = lista.filter(h => h.disponible);
-  else if (['individual','doble','suite'].includes(filtroHab)) lista = lista.filter(h => h.tipo === filtroHab);
-
-  const cont = document.getElementById('lista-habitaciones');
-  if (!lista.length) { cont.innerHTML = '<div class="empty"><div class="icon">🛏</div><div>No hay habitaciones con ese filtro</div></div>'; return; }
-
-  cont.innerHTML = lista.map(h => `
-    <div class="card">
-      <span class="card-badge badge-${h.tipo}">${h.tipo}</span>
-      <h3>Habitación ${h.numero}</h3>
-      <p>${h.descripcion || 'Sin descripción'}</p>
-      <p style="margin-top:0.5rem;">👤 Capacidad: ${h.capacidad} persona${h.capacidad > 1 ? 's' : ''}</p>
-      <div class="price">€${h.precio} <span>/ noche</span></div>
-      <span class="card-badge ${h.disponible ? 'badge-available' : 'badge-occupied'}">${h.getEstado()}</span>
-      <div class="btn-group">
-        ${h.disponible && usuarioActual?.rol !== 'admin'
-          ? `<button class="btn btn-gold btn-sm" onclick="abrirModalReserva('${h.id}')">Reservar</button>`
-          : h.disponible ? '<span style="color:var(--text-muted);font-size:0.8rem;">Solo usuarios pueden reservar</span>' : ''}
-      </div>
-    </div>
-  `).join('');
-}
-
-// ════════════════════════════════════════════════
-//   MODAL RESERVA
-// ════════════════════════════════════════════════
-function abrirModalReserva(habId) {
-  habitacionSeleccionada = hotel.habitaciones.find(h => h.id == habId);
-  if (!habitacionSeleccionada) return;
-
-  document.getElementById('res-hab-info').value =
-    `Hab. ${habitacionSeleccionada.numero} — ${habitacionSeleccionada.tipo} — €${habitacionSeleccionada.precio}/noche`;
-
-  // Fechas por defecto
-  const hoy = new Date(); const manana = new Date(hoy); manana.setDate(hoy.getDate() + 1);
-  document.getElementById('res-entrada').value = toInputDate(hoy);
-  document.getElementById('res-salida').value   = toInputDate(manana);
-
-  // Servicios
-  const cont = document.getElementById('servicios-check');
-  cont.innerHTML = hotel.servicios.map(s => `
-    <label style="display:flex;align-items:center;gap:0.4rem;background:var(--dark3);padding:0.4rem 0.7rem;border-radius:5px;cursor:pointer;font-size:0.8rem;">
-      <input type="checkbox" value="${s.id}" onchange="calcularTotalModal()" style="accent-color:var(--gold);">
-      ${s.nombre} (+€${s.precio}/noche)
-    </label>
-  `).join('');
-
-  calcularTotalModal();
-  document.getElementById('modal-reserva').classList.add('open');
-
-  // Recalcular al cambiar fechas
-  ['res-entrada','res-salida'].forEach(id =>
-    document.getElementById(id).addEventListener('change', calcularTotalModal));
-}
-
-function calcularTotalModal() {
-  const entrada = document.getElementById('res-entrada').value;
-  const salida  = document.getElementById('res-salida').value;
-  if (!entrada || !salida || !habitacionSeleccionada) return;
-  const noches = Math.max(1, Math.ceil((new Date(salida) - new Date(entrada)) / 86400000));
-  const serviciosSeleccionados = getServiciosSeleccionados();
-  const costoServ = serviciosSeleccionados.reduce((a, s) => a + s.precio, 0);
-  const total = (habitacionSeleccionada.precio + costoServ) * noches;
-  document.getElementById('res-total').textContent =
-    `Total estimado: €${total} (${noches} noche${noches > 1 ? 's' : ''})`;
-}
-
-function getServiciosSeleccionados() {
-  return [...document.querySelectorAll('#servicios-check input:checked')]
-    .map(cb => hotel.servicios.find(s => s.id == cb.value))
-    .filter(Boolean);
-}
-
-function cerrarModal() {
-  document.getElementById('modal-reserva').classList.remove('open');
-  habitacionSeleccionada = null;
-}
-
-function confirmarReserva() {
-  const entrada = document.getElementById('res-entrada').value;
-  const salida  = document.getElementById('res-salida').value;
-  if (!entrada || !salida) { showToast('Selecciona las fechas', true); return; }
-  if (new Date(salida) <= new Date(entrada)) { showToast('La salida debe ser posterior a la entrada', true); return; }
-
-  const servExt = getServiciosSeleccionados();
-  const reserva = new Reserva(usuarioActual, habitacionSeleccionada, entrada, salida, servExt);
-  habitacionSeleccionada.reservar();
-  usuarioActual.agregarReserva(reserva);
-  hotel.agregarReserva(reserva);
-
-  cerrarModal();
-  renderHabitaciones();
-  showToast(`✅ Reserva ${reserva.id} confirmada — €${reserva.total}`);
-}
-
-// ════════════════════════════════════════════════
-//   RESERVAS USUARIO
-// ════════════════════════════════════════════════
-function renderReservasUsuario() {
-  const cont = document.getElementById('lista-reservas-usuario');
-  const activas = usuarioActual.getReservasActivas();
-  if (!activas.length) {
-    cont.innerHTML = '<div class="empty"><div class="icon">📭</div><div>No tienes reservas activas</div></div>';
-    return;
-  }
-  cont.innerHTML = activas.map(r => `
-    <div class="historial-item">
-      <div class="info">
-        <h4>${r.id} — Hab. ${r.habitacion.numero} (${r.habitacion.tipo})</h4>
-        <p>📅 ${formatFecha(r.entrada)} → ${formatFecha(r.salida)} · ${r.getNochesTotal()} noches</p>
-        ${r.serviciosExtra.length ? `<p>🍽 Extras: ${r.serviciosExtra.map(s=>s.nombre).join(', ')}</p>` : ''}
-      </div>
-      <div style="text-align:right;">
-        <div class="precio">€${r.total}</div>
-        <button class="btn btn-danger btn-sm" onclick="cancelarReserva('${r.id}')">Cancelar</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function cancelarReserva(id) {
-  const r = usuarioActual.reservas.find(r => r.id === id);
-  if (!r) return;
-  r.cancelar();
-  renderReservasUsuario();
-  renderHabitaciones();
-  showToast('Reserva cancelada');
-}
-
-// ════════════════════════════════════════════════
-//   HISTORIAL
-// ════════════════════════════════════════════════
-function renderHistorial() {
-  const cont = document.getElementById('historial-usuario');
-  const hist = usuarioActual.getHistorial();
-  if (!hist.length) { cont.innerHTML = '<div class="empty"><div class="icon">🕐</div><div>Sin historial aún</div></div>'; return; }
-  cont.innerHTML = [...hist].reverse().map(r => `
-    <div class="historial-item">
-      <div class="info">
-        <h4>${r.id} — Hab. ${r.habitacion.numero} (${r.habitacion.tipo})</h4>
-        <p>📅 ${formatFecha(r.entrada)} → ${formatFecha(r.salida)} · ${r.getNochesTotal()} noches</p>
-        <p>Creada: ${formatFecha(r.fechaCreacion)}</p>
-      </div>
-      <div style="text-align:right;">
-        <span class="card-badge ${r.estado === 'activa' ? 'badge-available' : 'badge-occupied'}">${r.estado}</span>
-        <div class="precio">€${r.total}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ════════════════════════════════════════════════
-//   ADMIN — USUARIOS
-// ════════════════════════════════════════════════
-function renderUsuarios() {
-  document.getElementById('tabla-usuarios').innerHTML = hotel.usuarios.map(u => `
-    <tr>
-      <td>${u.nombre}</td>
-      <td>${u.email}</td>
-      <td>${u.rol === 'admin' ? '<span class="admin-badge">Admin</span>' : 'Usuario'}</td>
-      <td>${u.reservas?.length ?? '—'}</td>
-      <td>
-        ${u.email !== 'admin@hotel.com' ? `<button class="btn btn-danger btn-sm" onclick="eliminarUsuario('${u.id}')">Eliminar</button>` : '—'}
-      </td>
-    </tr>
-  `).join('');
-}
-
-function eliminarUsuario(id) {
-  hotel.usuarios = hotel.usuarios.filter(u => u.id != id);
-  renderUsuarios();
-  showToast('Usuario eliminado');
-}
-
-// ════════════════════════════════════════════════
-//   ADMIN — HABITACIONES
-// ════════════════════════════════════════════════
-function renderAdminHab() {
-  document.getElementById('tabla-admin-hab').innerHTML = hotel.habitaciones.map(h => `
-    <tr>
-      <td>${h.numero}</td>
-      <td><span class="card-badge badge-${h.tipo}">${h.tipo}</span></td>
-      <td>€${h.precio}</td>
-      <td>${h.capacidad}</td>
-      <td class="${h.disponible ? 'status-ok' : 'status-err'}">${h.getEstado()}</td>
-      <td>
-        <button class="btn btn-danger btn-sm" onclick="eliminarHabitacion('${h.id}')">Eliminar</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function agregarHabitacion() {
-  const num  = parseInt(document.getElementById('hab-num').value);
-  const tipo = document.getElementById('hab-tipo').value;
-  const prec = parseFloat(document.getElementById('hab-precio').value);
-  const cap  = parseInt(document.getElementById('hab-capacidad').value);
-  const desc = document.getElementById('hab-desc').value;
-  if (!num || !tipo || !prec || !cap) { showToast('Rellena todos los campos', true); return; }
-  if (hotel.habitaciones.find(h => h.numero === num)) { showToast('Ya existe una habitación con ese número', true); return; }
-
-  const nueva = new Habitacion(num, tipo, prec, cap, desc);
-  hotel.agregarHabitacion(nueva);
-  renderAdminHab();
-  renderHabitaciones();
-  showToast(`Habitación ${num} añadida`);
-  ['hab-num','hab-precio','hab-capacidad','hab-desc'].forEach(id => document.getElementById(id).value = '');
-}
-
-function eliminarHabitacion(id) {
-  hotel.eliminarHabitacion(id);
-  renderAdminHab();
-  renderHabitaciones();
-  showToast('Habitación eliminada');
-}
-
-// ════════════════════════════════════════════════
-//   ADMIN — SERVICIOS
-// ════════════════════════════════════════════════
-function renderAdminServicios() {
-  const cont = document.getElementById('lista-servicios-admin');
-  cont.innerHTML = hotel.servicios.map(s => `
-    <div class="card">
-      <h3>${s.nombre}</h3>
-      <div class="price">€${s.precio} <span>/ noche</span></div>
-      <div class="btn-group">
-        <button class="btn btn-danger btn-sm" onclick="eliminarServicio('${s.id}')">Eliminar</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function agregarServicio() {
-  const nombre = document.getElementById('serv-nombre').value.trim();
-  const precio = parseFloat(document.getElementById('serv-precio').value);
-  if (!nombre || !precio) { showToast('Rellena nombre y precio', true); return; }
-  hotel.agregarServicio(new Servicio(nombre, precio));
-  renderAdminServicios();
-  showToast(`Servicio "${nombre}" añadido`);
-  document.getElementById('serv-nombre').value = '';
-  document.getElementById('serv-precio').value = '';
-}
-
-function eliminarServicio(id) {
-  hotel.eliminarServicio(id);
-  renderAdminServicios();
-  showToast('Servicio eliminado');
-}
-
-// ════════════════════════════════════════════════
-//   UTILIDADES
-// ════════════════════════════════════════════════
-function formatFecha(d) {
-  if (!(d instanceof Date)) d = new Date(d);
-  return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
-}
-function toInputDate(d) {
-  return d.toISOString().split('T')[0];
-}
-
-let toastTimer;
-function showToast(msg, error = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show' + (error ? ' error' : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.className = '', 3500);
-}
-
-// Cerrar modal al hacer click fuera
-document.getElementById('modal-reserva').addEventListener('click', function(e) {
-  if (e.target === this) cerrarModal();
-});
-</script>
+    $("#tl").dataset.act = "tab"; $("#tr").dataset.act = "tab";
+    $("#tl").dataset.tab = "login"; $("#tr").dataset.tab = "reg";
+    $("#tl").className = "btn g"; // default
+    setAdminUI(0);
+  </script>
 </body>
+
 </html>
